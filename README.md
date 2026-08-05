@@ -10,8 +10,4 @@ PulseDesk is a high-performance, scalable backend RESTful API built with **Djang
 ## 🛠️ Tech Stack
 - **Language:** Python 3.14+
 - **Framework:** Django 6.0, Django REST Framework
-<<<<<<< HEAD
 - **Database:** SQLite (Dev) / PostgreSQL (Prod)
-=======
-- **Database:** SQLite (Dev) / PostgreSQL (Prod)
->>>>>>> 7a2c21acf4277a7f05c9ed37fd670aff89fe23d3

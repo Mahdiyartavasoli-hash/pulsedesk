@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from .models import Department, Ticket, TicketMessage
 from .serializers import DepartmentSerializer, TicketSerializer, TicketMessageSerializer
-
+from .permissions import IsOwnerOrStaff
 
 
 class DepartmentViewSet(viewsets.ModelViewSet):
@@ -10,8 +10,15 @@ class DepartmentViewSet(viewsets.ModelViewSet):
 
 
 class TicketViewSet(viewsets.ModelViewSet):
-    queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
+    permission_classes = [IsOwnerOrStaff]
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_staff:
+            return Ticket.objects.all()
+        else:
+            return Ticket.objects.filter(customer=user)
+    
 
 
 class TicketMessageViewSet(viewsets.ModelViewSet):

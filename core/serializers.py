@@ -18,7 +18,8 @@ class UserSerializer(serializers.ModelSerializer):
 class TicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
-        fields = ['id', 'title', 'customer', 'department', 'priority', 'created_at']  
+        fields = ['id', 'title', 'customer', 'department', 'priority', 'created_at']
+        read_only_fields = ['customer']   
 
              
 class TicketMessageSerializer(serializers.ModelSerializer):

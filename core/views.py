@@ -12,12 +12,15 @@ class DepartmentViewSet(viewsets.ModelViewSet):
 class TicketViewSet(viewsets.ModelViewSet):
     serializer_class = TicketSerializer
     permission_classes = [IsOwnerOrStaff]
+
     def get_queryset(self):
         user = self.request.user
         if user.is_staff:
             return Ticket.objects.all()
-        else:
-            return Ticket.objects.filter(customer=user)
+        return Ticket.objects.filter(customer=user)
+
+    def perform_create(self, serializer):
+        serializer.save(customer=self.request.user)
     
 
 

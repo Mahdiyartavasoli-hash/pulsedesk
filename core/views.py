@@ -25,8 +25,17 @@ class TicketViewSet(viewsets.ModelViewSet):
 
 
 class TicketMessageViewSet(viewsets.ModelViewSet):
-    queryset = TicketMessage.objects.all()
     serializer_class = TicketMessageSerializer
+    permission_classes = [IsOwnerOrStaff]
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_staff:
+            return TicketMessage.objects.all()
+        return TicketMessage.objects.filter(ticket__customer=user)
+    def perform_create(self, serializer):
+        serializer.save(sender=self.request.user)
+
+
 
 
 

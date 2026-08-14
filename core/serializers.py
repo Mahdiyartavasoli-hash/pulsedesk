@@ -23,6 +23,14 @@ class TicketSerializer(serializers.ModelSerializer):
 
              
 class TicketMessageSerializer(serializers.ModelSerializer):
+    sender = UserSerializer(read_only=True)
+    def validate_ticket(self, value):
+        user = self.context['request'].user
+        if not user.is_staff and value.customer != user:
+            raise serializers.ValidationError("You do not have permission to send a message for this ticket.")
+        return value
     class Meta:
         model = TicketMessage
-        fields = ['id', 'ticket', 'sender', 'message', 'created_at']       
+        fields = ['id', 'ticket', 'sender', 'message', 'created_at'] 
+        read_only_fields = ['sender']
+              

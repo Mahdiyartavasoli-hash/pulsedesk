@@ -2,8 +2,9 @@ from rest_framework.permissions import BasePermission
 
 class IsOwnerOrStaff(BasePermission):
     def has_object_permission(self, request, view, obj):
-        if request.user.is_staff or obj.customer == request.user:
+        if request.user.is_staff:
             return True
-        return False
+        
+        owner = getattr(obj, 'customer', None) or getattr(obj, 'sender', None)
 
-   
+        return owner == request.user

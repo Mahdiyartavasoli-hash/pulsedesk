@@ -4,7 +4,11 @@ class IsOwnerOrStaff(BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.user.is_staff:
             return True
-        
-        owner = getattr(obj, 'customer', None) or getattr(obj, 'sender', None)
+        customer = getattr(obj, 'customer', None) 
+        ticket = getattr(obj, 'ticket', None)
 
-        return owner == request.user
+        if  customer:
+           return customer == request.user
+        elif ticket:
+            return ticket.customer == request.user
+        return False 
